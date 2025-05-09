@@ -1,0 +1,7 @@
+Commit em Produção 
+
+git add .
+git commit -m "Versão pronta para Render"
+git branch -M main
+git remote add origin https://github.com/thalita-reis/Vendifacil_produ-o-.git
+git push -u origin main
