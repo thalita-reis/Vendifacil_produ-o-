@@ -1,0 +1,198 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Corpo da página */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f8f8;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Container principal */
+.container {
+  background-color: white;
+  width: 100%;
+  max-width: 900px;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Título */
+h2 {
+  text-align: center;
+  background-color: #ffe600;
+  color: #000;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+/* Formulários */
+.form-group {
+  margin-bottom: 18px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 6px;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  border-color: #ffe600;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 230, 0, 0.3);
+}
+
+input[readonly] {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+/* Estilização geral de botões */
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.02);
+}
+
+/* Cores específicas por classe */
+button.calcular { background-color: #007bff; color: white; }
+button.calcular:hover { background-color: #0069d9; }
+
+button.salvar { background-color: #28a745; color: white; }
+button.salvar:hover { background-color: #218838; }
+
+button.cancelar { background-color: #ffc107; color: white; }
+button.cancelar:hover { background-color: #e0a800; }
+
+button.limpar { background-color: #17a2b8; color: white; }
+button.limpar:hover { background-color: #138496; }
+
+button.voltar { background-color: #6c757d; color: white; }
+button.voltar:hover { background-color: #5a6268; }
+
+button.sair, button.excluir { background-color: #dc3545; color: white; }
+button.sair:hover, button.excluir:hover { background-color: #c82333; }
+
+button.editar { background-color: #007bff; color: white; }
+button.editar:hover { background-color: #0069d9; }
+
+/* Botões agrupados em linha */
+.botoes-final {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+.botoes-final button {
+  flex: 1;
+}
+
+/* Container para tabela responsiva */
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+/* Tabela */
+table {
+  min-width: 850px;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 24px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 12px 10px;
+  font-size: 14px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+th {
+  background-color: #ffe600;
+  color: #000;
+}
+
+td {
+  background-color: #f9f9f9;
+}
+
+/* Campo Total de Lucro */
+#totalLucro {
+  background-color: #ffe600;
+  color: black;
+  padding: 15px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+
+/* Imagens */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.img-container {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 20px;
+    padding: 14px;
+  }
+
+  input, button {
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  .container {
+    padding: 16px;
+  }
+
+  th, td {
+    font-size: 12px;
+    padding: 8px;
+  }
+}

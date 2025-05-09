@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro - IMAGIN3D</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Cadastrar Nova Conta</h2>
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="newUsername">Usuário</label>
+        <input type="text" id="newUsername" required placeholder="Digite seu nome de usuário">
+      </div>
+
+      <div class="form-group">
+        <label for="newPassword">Senha</label>
+        <input type="password" id="newPassword" required placeholder="Mínimo 6 caracteres">
+      </div>
+
+      <button type="submit">Registrar</button>
+
+      <p class="login-link">Já tem uma conta? <a href="index.html">Voltar ao login</a></p>
+      <p id="registerMessage" class="success-message"></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const user = document.getElementById('newUsername').value.trim();
+      const pass = document.getElementById('newPassword').value.trim();
+      const message = document.getElementById('registerMessage');
+
+      if (user.length === 0 || pass.length === 0) {
+        Swal.fire('Erro!', 'Usuário e senha são obrigatórios!', 'error');
+        return;
+      }
+
+      if (pass.length < 6) {
+        Swal.fire('Erro!', 'A senha deve ter no mínimo 6 caracteres.', 'warning');
+        return;
+      }
+
+      let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+      const jaExiste = usuarios.some(u => u.usuario === user);
+      if (jaExiste) {
+        Swal.fire('Erro!', 'Usuário já existe!', 'error');
+        return;
+      }
+
+      usuarios.push({ usuario: user, senha: pass });
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Cadastro realizado!',
+        text: 'Agora você pode fazer login.',
+        confirmButtonText: 'Ir para Login'
+      }).then(() => {
+        window.location.href = 'index.html';
+      });
+
+      // Reset opcional
+      document.getElementById('registerForm').reset();
+    });
+  </script>
+</body>
+</html>

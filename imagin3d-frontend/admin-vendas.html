@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Administração de Vendas - IMAGIN3D</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container" aria-label="Área principal de administração de vendas">
+
+    <header>
+      <h2>Administração de Vendas - IMAGIN3D</h2>
+    </header>
+
+    <!-- Seção do formulário -->
+    <section aria-label="Formulário de Lançamento de Vendas">
+      <form id="formulario">
+        <div class="form-group">
+          <label for="dataLancamento">Data do Lançamento</label>
+          <input type="text" id="dataLancamento" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="descricao">Descrição do Produto</label>
+          <input type="text" id="descricao" placeholder="Digite a descrição">
+        </div>
+
+        <div class="form-group">
+          <label for="estoque">Quantidade de Vendas</label>
+          <input type="number" id="estoque" placeholder="Digite a quantidade">
+        </div>
+
+        <div class="form-group">
+          <label for="custo">Preço de Custo (R$)</label>
+          <input type="text" id="custo" placeholder="Ex: 100,00">
+        </div>
+
+        <div class="form-group">
+          <label for="taxaFixa">Tarifa de Venda (R$)</label>
+          <input type="text" id="taxaFixa" placeholder="Ex: 5,00">
+        </div>
+
+        <div class="form-group">
+          <label for="frete">Frete (R$)</label>
+          <input type="text" id="frete" placeholder="Ex: 10,00">
+        </div>
+
+        <div class="form-group">
+          <label for="gestao">Custo de Gestão de Vendas (R$)</label>
+          <input type="text" id="gestao" placeholder="Ex: 2,50">
+        </div>
+
+        <div class="form-group">
+          <label for="venda">Preço de Venda (R$)</label>
+          <input type="text" id="venda" placeholder="Ex: 150,00">
+        </div>
+            
+        <button type="button" id="btnCalcular" class="voltar" aria-label="Calcular e salvar lançamento">Calcular e Salvar</button>
+        
+        <div class="form-group" style="margin-top: 30px;">
+          <label for="lucro">Lucro (R$)</label>
+          <input type="text" id="lucro" readonly>
+        </div>
+      </form>
+    </section>
+
+    <!-- Seção de lançamentos -->
+    <section aria-label="Tabela de Lançamentos Salvos">
+      <h3>Lançamentos Salvos</h3>
+      <table id="tabelaLancamentos">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th>Quant.Vendas</th>
+            <th>Custo</th>
+            <th>Tarifa</th>
+            <th>Frete</th>
+            <th>Gestão</th>
+            <th>Preço Venda</th>
+            <th>Lucro</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="corpoTabela"></tbody>
+      </table>
+
+      <div class="form-group mt-3" style="margin-top: 30px;">
+        <label for="totalLucro"><strong>Total de Lucro Acumulado (R$)</strong></label>
+        <input type="text" id="totalLucro" readonly value="0,00">
+      </div>
+    </section>
+
+    <!-- Dentro do <footer> ou logo após a seção de lançamentos -->
+<footer style="margin-top: 20px; text-align: center;">
+  <!-- Botão de Lucros Mensais -->
+<a href="lucros.html" style="text-decoration: none;">
+  <button type="button" class="voltar" aria-label="Visualizar lucros mensais">
+    Ver Lucros Mensais
+  </button>
+</a>
+
+<!-- Botão de Logout -->
+<button type="button" id="btnLogout" class="voltar" aria-label="Sair do sistema e voltar à página de login" style="margin-top: 10px;">
+  Sair e Voltar ao Login
+</button>
+  </footer><!--
+      
+  </section>
+
+    <!-- Seção de rodapé -->
+    <footer aria-label="Rodapé da página">
+      <p>&copy; 2023 IMAGIN3D. Todos os direitos reservados.</p>
+    </footer>
+    
+
+  </main>
+
+  <script src="admin-vendas.js"></script>
+</body>
+</html>
+<script>
+  // Função para formatar valores monetários
+  function formatarMoeda(valor) {
+    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  // Função para calcular o lucro
+  function calcularLucro(custo, taxaFixa, frete, gestão, venda) {
+    return (venda - custo - taxaFixa - frete - gestão).toFixed(2);
+  }
+  
+  // Função para calcular o total de lucro acumulado
+  function calcularTotalLucro(lucros) {
+    return lucros.reduce((total, lucro) => total + parseFloat(lucro), 0).toFixed(2);
+  }
+  
+  // Função para atualizar a tabela de lançamentos
+  function atualizarTabela(lancamentos) {
+    const corpoTabela = document.getElementById('corpoTabela');
+    corpoTabela.innerHTML = ''; // Limpa a tabela antes de adicionar novos lançamentos
+
+    lancamentos.forEach((lancamento, index) => {
+      const linha = document.createElement('tr');
+      linha.innerHTML = `
+        <td>${lancamento.data}</td>
+        <td>${lancamento.descricao}</td>
+        <td>${lancamento.quantidade}</td>
+        <td>${formatarMoeda(lancamento.custo)}</td>
+        <td>${formatarMoeda(lancamento.taxaFixa)}</td>
+        <td>${formatarMoeda(lancamento.frete)}</td>
+        <td>${formatarMoeda(lancamento.gestao)}</td>
+        <td>${formatarMoeda(lancamento.precoVenda)}</td>
+        <td>${formatarMoeda(lancamento.lucro)}</td>
+        <td>
+        <button type="button" class="btnEditar" data-index="${index}">✏️ Editar</button>
+        <button type="button" class="btnExcluir" data-index="${index}">🗑️ Excluir</button>
+        </td>
+
+      corpoTabela.appendChild(linha);
+    });
+  }
+  
+  // Função para salvar o lançamento no localStorage
+  function salvarLancamento(lancamento) {
+    const lancamentos = JSON.parse(localStorage.getItem('lancamentos')) || [];
+    lancamentos.push(lancamento);
+    localStorage.setItem('lancamentos', JSON.stringify(lancamentos));
+  }  
+  
+  // Função para carregar os lançamentos do localStorage
+  function carregarLancamentos() {
+    return JSON.parse(localStorage.getItem('lancamentos')) || [];
+  } 
+  
+  // Função para excluir um lançamento do localStorage
+  function excluirLancamento(index) {
+    const lancamentos = carregarLancamentos();
+    lancamentos.splice(index, 1);
+    localStorage.setItem('lancamentos', JSON.stringify(lancamentos));
+  } 
+  
+  // Função para formatar o valor monetário
+  function formatarValor(valor) {
+    return parseFloat(valor.replace(',', '.')).toFixed(2);
+  } 
+  
+  // Função para validar os campos do formulário  
+  function validarCampos() {
+    const descricao = document.getElementById('descricao').value.trim();
+    const quantidade = document.getElementById('estoque').value.trim();
+    const custo = document.getElementById('custo').value.trim();
+    const taxaFixa = document.getElementById('taxaFixa').value.trim();
+    const frete = document.getElementById('frete').value.trim();
+    const gestao = document.getElementById('gestao').value.trim();
+    const precoVenda = document.getElementById('venda').value.trim();
+
+    if (!descricao || !quantidade || !custo || !taxaFixa || !frete || !gestao || !precoVenda) {
+      alert('Por favor, preencha todos os campos.');
+      return false;
+    }
+    return true;
+  } 
+
+  // Função para calcular e salvar o lançamento
+  
+  function calcularESalvarLancamento() {
+    const descricao = document.getElementById('descricao').value.trim();
+    const quantidade = parseInt(document.getElementById('estoque').value.trim(), 10);
+    const custo = formatarValor(document.getElementById('custo').value.trim());
+    const taxaFixa = formatarValor(document.getElementById('taxaFixa').value.trim());
+    const frete = formatarValor(document.getElementById('frete').value.trim());
+    const gestao = formatarValor(document.getElementById('gestao').value.trim());
+    const precoVenda = formatarValor(document.getElementById('venda').value.trim());
+
+    if (!validarCampos()) return;
+
+    const dataLancamento = new Date().toLocaleDateString('pt-BR');
+    const lucro = calcularLucro(custo, taxaFixa, frete, gestao, precoVenda);
+
+    const lancamento = {
+      data: dataLancamento,
+      descricao,
+      quantidade,
+      custo: parseFloat(custo),
+      taxaFixa: parseFloat(taxaFixa),
+      frete: parseFloat(frete),
+      gestao: parseFloat(gestao),
+      precoVenda: parseFloat(precoVenda),
+      lucro: parseFloat(lucro)
+    };
+
+    salvarLancamento(lancamento);
+    atualizarTabela(carregarLancamentos());
+
+    // Atualiza o total de lucro acumulado
+    const lucros = carregarLancamentos().map(l => l.lucro);
+    document.getElementById('totalLucro').value = formatarMoeda(calcularTotalLucro(lucros));
+  }
